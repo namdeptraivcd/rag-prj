@@ -1,2 +1,1 @@
-# rag-prj
-Simple Retrieval-Augmented Generation
+# RAG Chatbot
