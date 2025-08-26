@@ -1,12 +1,10 @@
-from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
-from src.utils.utils import split_text, read_source
+from src.config.config import Config
+from langchain_core.vectorstores import InMemoryVectorStore
 
+
+embeddings = Config().embeddings
 class Vector_store:
-    def __init__ (self, web_path):
+    def __init__ (self):
 
-        embeddings = OpenAIEmbeddings()
-        docs = read_source(web_path)
-        splited_texts = split_text(docs)
-        vector_store = FAISS.from_documents(splited_texts, embeddings)
-        return vector_store
+
+        self.vector_store = InMemoryVectorStore(embeddings)        
