@@ -1,5 +1,5 @@
-from src.model.vectorstore import Vector_store
-from src.model.rag.rag import RAG
+from .src.model.vectorstore import Vector_store
+from .src.model.rag.rag import RAG
 
 
 # @TODO: deploy this chatbot to web using Next.js
