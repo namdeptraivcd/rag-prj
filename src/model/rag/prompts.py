@@ -1,7 +1,8 @@
-from langchain import hub
+from src.config.config import Config
 
 
+prompt = Config().prompt
 class Prompt:
     def __init__(self):
-        self.prompt = hub.pull("rlm/rag-prompt")
+        self.prompt = prompt
 
