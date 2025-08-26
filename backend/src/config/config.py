@@ -1,0 +1,21 @@
+import os 
+import getpass
+from langchain.chat_models import init_chat_model
+from langchain_openai import OpenAIEmbeddings
+from langchain import hub
+
+
+class Config():
+    
+    
+    def __init__(self):
+        #API key
+        os.environ["LANGSMITH_TRACING"] = "true"
+        os.environ["LANGSMITH_API_KEY"] = "YOUR_LANGSMITH_API_KEY"
+
+        if not os.environ.get("OPENAI_API_KEY"):
+            os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
+            
+        self.llm = init_chat_model("gpt-4o-mini", model_provider="openai")
+        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+        self.prompt = hub.pull("rlm/rag-prompt")

@@ -207,3 +207,8 @@ marimo/_lsp/
 __marimo__/
 
 .DS_Store
+node_modules/
+next-env.d.ts 
+package-lock.json 
+tsconfig.json 
+.next 
