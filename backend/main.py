@@ -15,6 +15,9 @@ def main():
     # Set question
     model.state["question"] = input("Enter your question: ")
 
+    #Analyze_query
+    model.analyze_query()
+    
     # Retrieve
     model.retrieve()
 

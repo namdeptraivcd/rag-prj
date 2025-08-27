@@ -1,5 +1,5 @@
-from src.model.rag.state.state import State
-from src.config.config import Config 
+from src.model.rag.state.state import State, Search
+from src.config.config import Config
 config = Config()
 
 class RAG:
@@ -11,9 +11,24 @@ class RAG:
         
         self.vector_store = vector_store
 
+    def analyze_query(self):
+        structured_llm = config.llm.with_structured_output(Search)
+        query = structured_llm.invoke(self.state["question"])
+        self.state["query"] = query
+
+
     def retrieve(self):
-        retrieved_docs = self.vector_store.similarity_search(self.state["question"])
+        query = self.state["query"]
+        section = query["section"]
+        if section:
+            retrieved_docs = self.vector_store.similarity_search(
+            query["query"],
+            filter=lambda doc: doc.metadata.get("section") == query["section"],
+    )
+        else:
+            retrieved_docs = self.vector_store.similarity_search(query["query"])
         self.state["context"] = retrieved_docs
+
     
     def generate(self):
         docs_content = "\n\n".join(doc.page_content for doc in self.state["context"])
