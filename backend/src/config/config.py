@@ -11,10 +11,10 @@ class Config():
     def __init__(self):
         #API key
         os.environ["LANGSMITH_TRACING"] = "true"
-        os.environ["LANGSMITH_API_KEY"] = "YOUR_LANGSMITH_API_KEY"
+        os.environ["LANGSMITH_API_KEY"] = "Your_Langsmith_API"
 
         if not os.environ.get("OPENAI_API_KEY"):
-            os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
+            os.environ["OPENAI_API_KEY"] = "Your_OpenAI_API"
             
         self.llm = init_chat_model("gpt-4o-mini", model_provider="openai")
         self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large")

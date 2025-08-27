@@ -1,4 +1,4 @@
-from src.model.rag.state import State
+from src.model.rag.state.state import State
 from src.config.config import Config 
 config = Config()
 
