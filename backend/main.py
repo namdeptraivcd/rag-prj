@@ -1,5 +1,8 @@
 from src.model.vectorstore import Vector_store
 from src.model.rag.rag import RAG
+from langchain_core.messages import HumanMessage
+from langchain_core.messages import SystemMessage
+from src.utils.fix_bug import print_conversation
 
 
 # @TODO: deploy this chatbot to web using Next.js
@@ -11,22 +14,35 @@ def main():
 
     # Model
     model = RAG(vs.vector_store)
-
-    # Set question
-    model.state["question"] = input("Enter your question: ")
-
-    #Analyze_query
-    model.analyze_query()
     
-    # Retrieve
-    model.retrieve()
-
-    # Generate
-    model.generate()
     
-    # Print answer
-    print(model.state["answer"])
+    #The history of the conversation
+    if "messages" not in model.state:
+        model.state["messages"] = []
+    system_prompt = (
+    "You are a retrieval-augmented assistant. "
+    "ALWAYS use the retrieve tool to get context from the provided documents before answering any user question. "
+    "Do not answer from your own knowledge unless the tool result is empty."
+)
+    model.state["messages"].insert(0, SystemMessage(content=system_prompt))
+
+    while True:
+        # Set question
+        question = input("Enter your question: ")
+        model.state["messages"].append(HumanMessage(content = question))
+
+        # query_or_respone
+        message_1 = model.query_or_respond()
+        model.state["messages"].extend(message_1["messages"])
+
+
+
+        # Generate
+        model.generate()
+
+        #Print answer
+        print(model.state["answer"])
     # @TODO: is the answer retrieved from the corpus or the answer of the llm its self?
 
-if __name__ =="__main__":
+if __name__ =="__main__": 
     main()
