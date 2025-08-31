@@ -7,3 +7,4 @@ def print_conversation(messages):
                 print("[AIMessage]", msg.content)
             elif msg_type == "tool":
                 print("[ToolMessage]", msg.content)
+                
