@@ -3,11 +3,12 @@ from qdrant_client.models import Distance, VectorParams
 from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from src.utils.utils import read_source, split_text
-config = Config()
+cfg = Config()
+
 
 class Vector_store:
     def __init__ (self):
-        embeddings = config.embeddings
+        embeddings = cfg.embeddings
         client = QdrantClient(":memory:")
         vector_size = len(embeddings.embed_query("sample text"))
 

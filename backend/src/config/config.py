@@ -6,8 +6,6 @@ from langchain import hub
 
 
 class Config():
-    
-    
     def __init__(self):
         #API key
         os.environ["LANGSMITH_TRACING"] = "true"
