@@ -1,8 +1,5 @@
 from src.model.rag import RAG
 from langchain_core.messages import HumanMessage
-from src.config.config import Config
-
-cfg = Config()
 
 
 def main():
@@ -14,14 +11,14 @@ def main():
         question = input("YOU: ")
         model.state["messages"].append(HumanMessage(content = question))
 
-        # query_or_respone
+        # Query or respond
         message, answer_type = model.query_or_respond()
         model.state["messages"].extend(message)
 
         # Generate
         model.generate()
 
-        #Print answer
+        # Print answer
         print(f"BOT: ({answer_type}) {model.state["answer"]}")
 
 

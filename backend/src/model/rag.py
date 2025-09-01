@@ -1,7 +1,7 @@
 from src.config.config import Config
 from langgraph.graph import StateGraph, MessagesState
 from langgraph.prebuilt import ToolNode
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import SystemMessage, ToolMessage
 from langchain_core.tools import tool
 from src.utils.helper_functions import retrieve_context_per_question
 from src.model.vectorstore import Vector_store
@@ -17,12 +17,24 @@ def make_retrieve_tool(vector_store):
             """
             retrieved_docs = []
             for vs in vector_store:
-                retrieved_docs.extend(vs.similarity_search(query))
+                retrieved_docs.extend(vs.similarity_search(query, k=4)) # Limit to 4 docs per store
+            
+            # If more than 4 docs total, keep only the top 4
+            retrieved_docs = retrieved_docs[:4]
+        
             serialized = "\n\n".join(
                 f"Source: {doc.metadata}, Content: {doc.page_content}"
                 for doc in retrieved_docs
             )
-        
+
+            # Debug 
+            '''debug_index = 0
+            import os
+            file_name = os.path.basename(__file__)
+            print(f"\n### Start debug {debug_index} in {file_name}")
+            print(f"Title: {retrieved_docs[0]}")
+            print(f"### End debug {debug_index} in {file_name}\n")'''
+
             return (serialized, retrieved_docs)
         return retrieve
 
@@ -37,12 +49,12 @@ class RAG:
         
         # Conversation history
         self.state["messages"] = []
-        system_prompt = (
+        self.system_prompt = (
             "You are a retrieval-augmented assistant. "
             "ALWAYS use the retrieve tool to get context from the provided documents before answering any user question. "
             "Do not answer from your own knowledge unless the tool result is empty."
         )
-        self.state["messages"].insert(0, SystemMessage(content=system_prompt))
+        self.state["messages"].insert(0, SystemMessage(content=self.system_prompt))
         
     def query_or_respond(self):
         llm_with_tools = self.llm.bind_tools([self.retrieve])
@@ -58,7 +70,6 @@ class RAG:
                 # Execute tool with query
                 tool_result = self.retrieve.invoke({"query": call["args"]["query"]})
                 
-                from langchain_core.messages import ToolMessage
                 tool_msg = ToolMessage(
                     content=tool_result,
                     name="retrieve",
@@ -79,9 +90,9 @@ class RAG:
                 recent_tool_messages.append(message)
             else:
                 break
-        tool_messages = recent_tool_messages[::-1]
+        tool_messages = recent_tool_messages[::-1] # Reverse
 
-        docs_content = "\n\n".join(doc.content for doc in tool_messages)
+        retrieved_docs = "\n\n".join(doc.content for doc in tool_messages) # Retrieved docs
 
         system_message_content = (
             "You are an assistant for question-answering tasks. "
@@ -90,7 +101,7 @@ class RAG:
             "don't know. Use three sentences maximum and keep the "
             "answer concise."
             "\n\n"
-            f"{docs_content}"
+            f"{retrieved_docs}"
         )
 
         conversation_messages = []

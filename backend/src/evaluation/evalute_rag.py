@@ -1,4 +1,4 @@
-"""
+'''"""
 RAG Evaluation Script
 
 This script evaluates the performance of a Retrieval-Augmented Generation (RAG) system
@@ -166,3 +166,4 @@ if __name__ == "__main__":
     # Add any necessary setup or configuration here
     # Example: evaluate_rag(your_chunks_query_retriever_function)
     pass
+'''

@@ -4,3 +4,15 @@ import os
 file_name = os.path.basename(__file__)
 print(f"\n### Start debug {debug_index} in {file_name}")
 print(f"### End debug {debug_index} in {file_name}\n")
+
+
+Commmit messages:
+Update load data mechanism, add load csv data mechanism, add basic evaluation mechanism
+
+
+"https://lilianweng.github.io/posts/2023-06-23-agent/",
+"https://www.deeplearning.ai/the-batch/how-agents-can-improve-llm-performance/?ref=dl-staging-website.ghost.io",
+"https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-2-reflection/?ref=dl-staging-website.ghost.io",
+"https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-3-tool-use/?ref=dl-staging-website.ghost.io",
+"https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-4-planning/?ref=dl-staging-website.ghost.io",
+"https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-5-multi-agent-collaboration/?ref=dl-staging-website.ghost.io"
