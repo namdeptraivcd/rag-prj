@@ -22,15 +22,6 @@ def make_retrieve_tool(vector_store):
                 f"Source: {doc.metadata}, Content: {doc.page_content}"
                 for doc in retrieved_docs
             )
-            
-            # Debug 
-            '''debug_index = 3
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            for retrieved_doc in retrieved_docs:
-                print(retrieved_doc)
-            print(f"### End debug {debug_index} in {file_name}\n")'''
         
             return (serialized, retrieved_docs)
         return retrieve
@@ -52,18 +43,6 @@ class RAG:
             "Do not answer from your own knowledge unless the tool result is empty."
         )
         self.state["messages"].insert(0, SystemMessage(content=system_prompt))
-
-    '''@tool(response_format = "content_and_artifact")
-    def retrieve(self, query):
-        """
-        Retrieve relevant documents from the vector store based on the query.
-        """
-        retrieved_docs = self.vector_store.similarity_search(query)
-        serialized = "\n\n".join (f"Source: {doc.metadata}, Content: {doc.page_content}" 
-                             for doc in retrieved_docs)
-
-        return {"content": serialized, 
-                "artifact": retrieved_docs}'''
         
     def query_or_respond(self):
         llm_with_tools = self.llm.bind_tools([self.retrieve])
@@ -74,26 +53,10 @@ class RAG:
         
         if tool_calls:
             answer_type = "rag"
-            # Debug 
-            '''debug_index = 0
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            print("LLM called retrieve tool")
-            print("Tool calls info:", tool_calls)
-            print(f"### End debug {debug_index} in {file_name}\n")'''
             
             for call in tool_calls:
                 # Execute tool with query
                 tool_result = self.retrieve.invoke({"query": call["args"]["query"]})
-                
-                # Debug 
-                '''debug_index = 4
-                import os
-                file_name = os.path.basename(__file__)
-                print(f"\n### Start debug {debug_index} in {file_name}")
-                print(type(tool_result))
-                print(f"### End debug {debug_index} in {file_name}\n")'''
                 
                 from langchain_core.messages import ToolMessage
                 tool_msg = ToolMessage(
@@ -105,13 +68,6 @@ class RAG:
                 
         else:
             answer_type = "llm"
-            # Debug 
-            '''debug_index = 1
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            print("LLM responds directly, no document retrieval")
-            print(f"### End debug {debug_index} in {file_name}\n")'''
 
         # Return both AIMessage and ToolMessage (if any)
         return [response] + tool_messages, answer_type
@@ -126,14 +82,6 @@ class RAG:
         tool_messages = recent_tool_messages[::-1]
 
         docs_content = "\n\n".join(doc.content for doc in tool_messages)
-        
-        # Debug 
-        '''debug_index = 5
-        import os
-        file_name = os.path.basename(__file__)
-        print(f"\n### Start debug {debug_index} in {file_name}")
-        print(docs_content)
-        print(f"### End debug {debug_index} in {file_name}\n")'''
 
         system_message_content = (
             "You are an assistant for question-answering tasks. "
