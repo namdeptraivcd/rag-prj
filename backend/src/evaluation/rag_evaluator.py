@@ -12,6 +12,8 @@ cfg = Config()
 class RAGEvaluator:
     def __init__(self):
         self.llm = cfg.llm
+        # Debug
+        self.count = 0
         self.__setup_graders()
     
     def __setup_graders(self):
@@ -138,6 +140,10 @@ class RAGEvaluator:
         print(f"\n### Start debug {debug_index} in {file_name}")
         print(type(answer_quality_score))
         print(f"### End debug {debug_index} in {file_name}\n")'''
+        
+        # Debug
+        print(f"Done query {self.count + 1}")
+        self.count += 1
                 
         return EvaluationResult(
             question=question,

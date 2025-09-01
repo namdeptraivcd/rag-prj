@@ -25,3 +25,27 @@ class Config():
         self.pdf_data_path = "data/Understanding_Climate_Change.pdf"
         self.csv_data_path = "data/customers-100.csv"
         self.results_path = "data/experiments/evaluation_results"
+        
+        self.experiment_questions = [
+            # Chapter 1
+            "What is climate change?",
+            "What human activities have contributed most to climate change?",
+            "What historical cycles of glacial advance and retreat occurred in the past 650,000 years?",
+            "What event marked the beginning of the modern climate era?",
+            "Which scientific methods are used to study past climate conditions?",
+
+            # Chapter 2
+            "What is the greenhouse effect?",
+            "Which gases are the main greenhouse gases?",
+            "Why is coal considered the most carbon-intensive fossil fuel?",
+            "How does oil consumption contribute to climate change?",
+            "Why is natural gas called a 'bridge fuel'?",
+            "What role do forests play in climate regulation?",
+            "How does deforestation contribute to climate change?",
+            "Why are tropical rainforests important for carbon storage?",
+            "What is the role of boreal forests in climate regulation?",
+            "How does agriculture contribute to climate change?",
+            "What greenhouse gas is mainly produced by livestock?",
+            "How does rice cultivation generate methane?",
+            "Why are synthetic fertilizers harmful to the climate?",
+        ]
