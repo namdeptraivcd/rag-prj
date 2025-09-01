@@ -6,8 +6,10 @@ print(f"\n### Start debug {debug_index} in {file_name}")
 print(f"### End debug {debug_index} in {file_name}\n")
 
 
-Commmit messages:
-Update load data mechanism, add load csv data mechanism, add basic evaluation mechanism
+Commmit commands:
+git add .
+git commit -m "Add chunk size evaluation mechanism, update README.md"
+git push
 
 
 "https://lilianweng.github.io/posts/2023-06-23-agent/",
@@ -16,3 +18,185 @@ Update load data mechanism, add load csv data mechanism, add basic evaluation me
 "https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-3-tool-use/?ref=dl-staging-website.ghost.io",
 "https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-4-planning/?ref=dl-staging-website.ghost.io",
 "https://www.deeplearning.ai/the-batch/agentic-design-patterns-part-5-multi-agent-collaboration/?ref=dl-staging-website.ghost.io"
+
+
+self.experiment_questions = [
+    "What is the main cause of climate change?",
+    "What is Self-Reflection?",
+    "What is Tropical Deforestation?",
+    "Explain the concept of machine learning",
+    "Which company does sheryl Baxter work for?"
+]
+
+
+self.experiment_questions = [
+    # Chapter 1
+    "What is climate change?",
+    "What human activities have contributed most to climate change?",
+    "What historical cycles of glacial advance and retreat occurred in the past 650,000 years?",
+    "What event marked the beginning of the modern climate era?",
+    "Which scientific methods are used to study past climate conditions?",
+
+    # Chapter 2
+    "What is the greenhouse effect?",
+    "Which gases are the main greenhouse gases?",
+    "Why is coal considered the most carbon-intensive fossil fuel?",
+    "How does oil consumption contribute to climate change?",
+    "Why is natural gas called a 'bridge fuel'?",
+    "What role do forests play in climate regulation?",
+    "How does deforestation contribute to climate change?",
+    "Why are tropical rainforests important for carbon storage?",
+    "What is the role of boreal forests in climate regulation?",
+    "How does agriculture contribute to climate change?",
+    "What greenhouse gas is mainly produced by livestock?",
+    "How does rice cultivation generate methane?",
+    "Why are synthetic fertilizers harmful to the climate?",
+
+    # Chapter 3
+    "By how much have global temperatures risen since the late 19th century?",
+    "What is the urban heat island effect?",
+    "How is climate change affecting the length of seasons?",
+    "How much have sea levels risen in the past century?",
+    "Why is the Arctic warming faster than the global average?",
+    "How does glacial retreat affect water supplies?",
+    "What threats do rising sea levels pose to coastal communities?",
+    "How does climate change intensify hurricanes?",
+    "Why are droughts becoming more frequent?",
+    "What causes more urban flooding due to climate change?",
+    "What is ocean acidification?",
+    "How does climate change affect coral reefs?",
+
+    # Chapter 4
+    "What is climate change mitigation?",
+    "What is climate change adaptation?",
+    "What are the main renewable energy sources?",
+    "Why is energy efficiency important for climate mitigation?",
+    "What is the difference between reforestation and afforestation?",
+    "What is the Paris Agreement?",
+    "How does carbon capture and storage (CCS) work?",
+    "What are the benefits of sustainable agriculture?",
+
+    # Chapter 5
+    "What role does technology play in climate change solutions?",
+    "What is direct air capture (DAC)?",
+    "How do electric vehicles help reduce emissions?",
+    "What is the role of hydrogen fuel cells in sustainable transport?",
+    "What are floating solar farms?",
+    "How do smart grids support renewable energy integration?",
+
+    # Chapter 6
+    "What is the role of the UNFCCC?",
+    "What are nationally determined contributions (NDCs)?",
+    "What is carbon pricing?",
+    "Why are local climate initiatives important?",
+    "What is community-based conservation?",
+    "How does education and awareness support climate action?",
+
+    # Chapter 7
+    "What are the economic costs of inaction on climate change?",
+    "How does climate change affect social inequality?",
+    "What economic opportunities does climate action create?",
+    "What are the health benefits of reducing emissions?",
+    "What are ecosystem services and why are they important?",
+
+    # Chapter 8
+    "How can AI and machine learning support climate solutions?",
+    "How can blockchain be used for climate action?",
+    "What role does bioengineering play in climate change mitigation?",
+    "What are integrated climate policies?",
+    "Why is international cooperation crucial for climate governance?",
+    "What is the role of public-private partnerships in climate action?",
+
+    # Chapter 9
+    "How does climate change impact terrestrial ecosystems?",
+    "How does climate change impact marine ecosystems?",
+    "How does climate change affect freshwater ecosystems?",
+    "What is habitat restoration?",
+    "What is ex-situ conservation?",
+    "What are nature-based solutions to climate change?",
+
+    # Chapter 10
+    "What are heat-related illnesses caused by climate change?",
+    "How does climate change affect vector-borne diseases?",
+    "How does air pollution link climate change to cardiovascular diseases?",
+    "How does climate change threaten food security?",
+    "What is climate-smart healthcare?",
+    "What role does the WHO play in addressing climate-related health issues?",
+
+    # Chapter 11
+    "Why is integrating climate education into school curricula important?",
+    "Why is teacher training important for climate education?",
+    "What is the role of grassroots movements in climate action?",
+    "How can youth leadership influence climate action?",
+    "What role does journalism play in climate communication?",
+
+    # Chapter 12
+    "What is meant by a holistic approach to climate change?",
+    "What is intergenerational equity in climate action?",
+    "What individual actions can help fight climate change?",
+    "What role do communities play in climate action?",
+    "Why is global solidarity important in climate change?",
+
+    # Chapter 13
+    "What is climate justice?",
+    "What is environmental racism?",
+    "Why are inclusive climate policies important?",
+    "What role does indigenous knowledge play in climate action?",
+    "How does gender inequality relate to climate change?",
+
+    # Chapter 14
+    "What is a green economy?",
+    "What is a circular economy?",
+    "What is sustainable finance?",
+    "What are green jobs?",
+    "Why is workforce skill development important for a green transition?",
+
+    # Chapter 15
+    "What are recent innovations in solar and wind energy?",
+    "Why is energy storage important for renewable energy?",
+    "How can hydrogen energy help decarbonize industry?",
+    "What are smart grids?",
+    "How can IoT help reduce energy consumption?",
+
+    # Chapter 16
+    "What is the Kyoto Protocol?",
+    "What is the Montreal Protocol?",
+    "What is the European Green Deal?",
+    "What is China's climate strategy?",
+    "What is the Green Climate Fund?",
+
+    # Chapter 17
+    "What is resilient infrastructure?",
+    "What is green infrastructure?",
+    "Why is adaptation planning important?",
+    "What is emergency preparedness in climate resilience?",
+    "What are nature-based coastal protection strategies?",
+
+    # Chapter 18
+    "What is citizen science in climate action?",
+    "Why are positive narratives important in climate communication?",
+    "What role do role models play in climate action?",
+    "How do the Sustainable Development Goals (SDGs) link to climate action?",
+    "What does a resilient and equitable world mean?",
+
+    # Chapter 19
+    "What are national climate policies?",
+    "What are policy instruments for climate action?",
+    "What is the role of COP in climate negotiations?",
+    "What are climate finance commitments?",
+    "Why is public participation important in climate policies?",
+
+    # Chapter 20
+    "What are renewable energy innovations?",
+    "What are carbon sequestration technologies?",
+    "What are community-based solutions for climate change?",
+    "What are innovative financing models for climate action?",
+    "What is adaptive governance in climate policy?",
+
+    # Chapter 21
+    "How can storytelling help climate action?",
+    "What is the role of cultural movements in climate change?",
+    "How can media and arts influence climate awareness?",
+    "Why is lifelong learning important for climate education?",
+    "What is intergenerational collaboration in climate action?"
+]
