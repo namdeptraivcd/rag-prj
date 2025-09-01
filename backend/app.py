@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Cấu hình CORS cho phép frontend truy cập
+# Configure CORS to allow frontend access
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -16,7 +16,7 @@ app.add_middleware(
 async def chat(request: Request):
     data = await request.json()
     question = data.get("question", "")
-    # TODO: Gọi RAG model để lấy câu trả lời thực tế
+    # TODO: Call RAG model to get actual answer
     # answer = model.answer(question)
-    answer = f"Bạn hỏi: {question}"  # Trả về tạm thời
+    answer = f"You asked: {question}"  # Temporary response
     return {"response": answer}

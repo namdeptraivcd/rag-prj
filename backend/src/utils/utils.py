@@ -1,10 +1,12 @@
 import bs4 #1
+from langchain.document_loaders import PyPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.config.config import Config
 
-
 cfg = Config()
+
 
 def read_source(web_paths):
     bs4_strainer = bs4.SoupStrainer(class_ =("post-title", "post-header", "post-content"))
@@ -24,3 +26,5 @@ def split_text(docs, chunk_size = cfg.chunk_size, chunk_overlap= cfg.chunk_overl
     )
     splited_texts = text_splitter.split_documents(docs)
     return splited_texts
+
+
