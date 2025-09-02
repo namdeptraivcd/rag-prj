@@ -1,32 +1,39 @@
 # RAG Chatbot
 
 ## Frontend
-```
-cd frontend
-```
+First, cd to folder frontend;
 
-To install npm libraries, run:
+to install npm libraries, run:
 ```
 npm install
 ```
 
-To run frontend, run:
+to run frontend, run:
 ```
 npm run dev
 ```
 
 ## Backend
-```
-cd backend
-```
+First, cd to folder backend;
 
-To run backend, run:
+to run backend, run:
 ```
 uvicorn app:app --reload --port 8000
 ```
 
+or run file main.py:
+```
+python main.py
+```
+
 ## Website
-To access the chatbot, go to:
+To access the chatbot, go to link:
 ```
 localhost:3000
+```
+
+## Expriment
+To run the experiment, cd to folder backend and run:
+```
+python experiment.py
 ```
