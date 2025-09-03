@@ -213,3 +213,5 @@ package-lock.json
 tsconfig.json 
 .next 
 .deepeval/
+backend/data/experiments/*
+!backend/data/experiments/.gitkeep

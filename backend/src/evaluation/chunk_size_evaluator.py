@@ -58,6 +58,6 @@ class ChunkSizeEvaluator:
             print(f"Average Relevance Score: {result['average_relevance_score']:.2f}/1.00")
             print(f"Average Faithfulness Score: {result['average_faithfulness_score']:.2f}/1.00")
             print(f"Average Answer Quality Score: {result['average_answer_quality_score']:.2f}/5.00")
-            print("-" * 50)
+            print("-" * 60)
             
         return results

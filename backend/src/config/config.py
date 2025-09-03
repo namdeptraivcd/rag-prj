@@ -21,6 +21,11 @@ class Config():
         self.chunk_size = 1000
         self.chunk_overlap = 200
         
+        # Query transformations
+        self.enable_rewrite_query = True
+        self.enable_generate_step_back_query = True
+        self.enable_decompose_query = False
+        
         self.web_data_paths = ("https://lilianweng.github.io/posts/2023-06-23-agent/",)
         self.pdf_data_path = "data/Understanding_Climate_Change.pdf"
         self.csv_data_path = "data/customers-100.csv"

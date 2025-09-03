@@ -16,7 +16,7 @@ class EvaluationRunner:
         
     def run_basic_evaluation(self):
         
-        print("Starting RAG Evaluation...")
+        print("Starting basic experiment...")
         print("=" * 60)
         
         model = RAG()
@@ -48,7 +48,7 @@ class EvaluationRunner:
         if chunk_sizes is None:
             chunk_sizes = [256, 512, 1000, 1500, 2000]
             
-        print("Starting Chunk Size Evaluation...")
+        print("Starting chunk size experiment...")
         print("=" * 60)
         
         results = self.chunk_evaluator.compare_chunk_sizes(self.questions, chunk_sizes)
