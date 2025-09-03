@@ -54,6 +54,7 @@ class QueryTransformer:
             input_variables=["original_query"],
             template=self.subquery_decomposition_template
         )
+        
         self.subquery_decomposer_chain = self.subquery_decomposition_prompt | self.llm
 
     def rewrite_query(self, original_query):

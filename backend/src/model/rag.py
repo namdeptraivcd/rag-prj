@@ -6,6 +6,7 @@ from langchain_core.tools import tool
 from src.utils.helper_functions import retrieve_context_per_question
 from src.model.vectorstore import Vector_store
 from src.utils.query_transformer import QueryTransformer
+from src.utils.hype_embedder import HyPEEmbedder
 
 cfg = Config()
 
@@ -52,6 +53,9 @@ class RAG:
         self.retrieve = make_retrieve_tool(self.vector_store.vector_store)
         self.query_transformer = QueryTransformer()
         
+        if cfg.enable_hype == True:
+            self.hype_embedder = HyPEEmbedder()
+            
         # Conversation history
         self.state["messages"] = []
         self.system_prompt = (

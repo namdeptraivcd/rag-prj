@@ -8,7 +8,7 @@ print(f"### End debug {debug_index} in {file_name}\n")
 
 Commmit commands:
 git add .
-git commit -m "Add query transformation mechanisms"
+git commit -m "Add HyPE mechanism, update load environment mechanism, update REAME.md"
 git push
 
 
