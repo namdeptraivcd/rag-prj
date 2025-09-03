@@ -101,15 +101,6 @@ class RAGEvaluator:
         relevance_scores = []
         for retrieved_doc in retrieved_docs:
             relevance_score = self.relevance_grader(question, retrieved_doc)
-            
-            # Debug 
-            '''debug_index = 1
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            print(type(relevance_score))
-            print(f"### End debug {debug_index} in {file_name}\n")'''
-
             relevance_scores.append(relevance_score)
         
         overall_relevance_score = "no"
@@ -122,24 +113,8 @@ class RAGEvaluator:
         retrieved_docs_text = "\n\n".join(retrieved_docs)
         faithfulness_score = self.faithfulness_grader(retrieved_docs_text, answer)
         
-        # Debug 
-        '''debug_index = 2
-        import os
-        file_name = os.path.basename(__file__)
-        print(f"\n### Start debug {debug_index} in {file_name}")
-        print(type(faithfulness_score))
-        print(f"### End debug {debug_index} in {file_name}\n")'''
-        
         # Evaluate quality of answer
         answer_quality_score = self.answer_quality_grader(question, answer)
-        
-        # Debug 
-        '''debug_index = 3
-        import os
-        file_name = os.path.basename(__file__)
-        print(f"\n### Start debug {debug_index} in {file_name}")
-        print(type(answer_quality_score))
-        print(f"### End debug {debug_index} in {file_name}\n")'''
         
         # Debug
         print(f"Done query {self.count + 1}")

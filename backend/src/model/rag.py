@@ -6,6 +6,7 @@ from langchain_core.tools import tool
 from src.utils.helper_functions import retrieve_context_per_question
 from src.model.vectorstore import Vector_store
 from src.utils.query_transformer import QueryTransformer
+from src.utils.hype_embedder import HyPEEmbedder
 
 cfg = Config()
 
@@ -31,14 +32,6 @@ def make_retrieve_tool(vector_store):
                 for retrieved_doc in retrieved_docs
             )
 
-            # Debug 
-            '''debug_index = 0
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            print(f"Title: {retrieved_docs[0]}")
-            print(f"### End debug {debug_index} in {file_name}\n")'''
-
             return (retrieved_docs_text, retrieved_docs)
         return retrieve
 
@@ -52,6 +45,9 @@ class RAG:
         self.retrieve = make_retrieve_tool(self.vector_store.vector_store)
         self.query_transformer = QueryTransformer()
         
+        if cfg.enable_hype == True:
+            self.hype_embedder = HyPEEmbedder()
+            
         # Conversation history
         self.state["messages"] = []
         self.system_prompt = (

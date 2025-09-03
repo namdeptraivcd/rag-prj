@@ -62,6 +62,14 @@ class EvaluationRunner:
         
         return results
     
+    # @TODO
+    def run_query_transformation_evaluation(self):
+        pass
+    
+    # @TODO
+    def run_hype_evaluation(self):
+        pass
+    
     def save_results(self, results, filename: str = None):
         """Save evaluation results to JSON file
         """

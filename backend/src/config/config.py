@@ -1,5 +1,5 @@
 import os 
-import getpass
+from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain_openai import OpenAIEmbeddings
 from langchain import hub
@@ -7,12 +7,13 @@ from langchain import hub
 
 class Config():
     def __init__(self):
+        # Load environment variables from .env file
+        load_dotenv()
+        
         #API key
         os.environ["LANGSMITH_TRACING"] = "true"
-        os.environ["LANGSMITH_API_KEY"] = ""
-
-        if not os.environ.get("OPENAI_API_KEY"):
-            os.environ["OPENAI_API_KEY"] = ""
+        os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY", "")
+        os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "")
         
         self.llm = init_chat_model("gpt-4o-mini", model_provider="openai")
         self.embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
@@ -20,6 +21,9 @@ class Config():
         
         self.chunk_size = 1000
         self.chunk_overlap = 200
+        
+        # HyPR settings
+        self.enable_hype = True
         
         # Query transformations
         self.enable_rewrite_query = True
