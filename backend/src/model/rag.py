@@ -32,14 +32,6 @@ def make_retrieve_tool(vector_store):
                 for retrieved_doc in retrieved_docs
             )
 
-            # Debug 
-            '''debug_index = 0
-            import os
-            file_name = os.path.basename(__file__)
-            print(f"\n### Start debug {debug_index} in {file_name}")
-            print(f"Title: {retrieved_docs[0]}")
-            print(f"### End debug {debug_index} in {file_name}\n")'''
-
             return (retrieved_docs_text, retrieved_docs)
         return retrieve
 

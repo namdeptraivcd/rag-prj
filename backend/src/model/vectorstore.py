@@ -59,12 +59,8 @@ class Vector_store:
         else:
             raise NotImplementedError("Data type not supported")
         
-        print("documents after load:", len(documents)) # Debug
-        
         chunks = self.text_splitter.split_documents(documents)
-        print("chunks after split:", len(chunks)) # Debug
         chunks = replace_t_with_space(chunks) # Clean chunks
-        print("chunks after clean:", len(chunks)) # Debug
         
         # Create vector store
         vector_store = None

@@ -23,25 +23,9 @@ class HyPEEmbedder:
         # Generate questions for a chunk
         questions_text = self.question_chain.invoke({"chunk_text": chunk_text})
         
-        # Debug 
-        '''debug_index = 0
-        import os
-        file_name = os.path.basename(__file__)
-        print(f"\n### Start debug {debug_index} in {file_name}")
-        print("chunk_text: ", chunk_text)
-        print(f"### End debug {debug_index} in {file_name}\n")'''
-        
         # Remove newlines and split into individual questions
         questions = questions_text.replace("\n\n", "\n").split("\n")
         questions = [q.strip() for q in questions if q.strip()]
-        
-        # Debug 
-        '''debug_index = 1
-        import os
-        file_name = os.path.basename(__file__)
-        print(f"\n### Start debug {debug_index} in {file_name}")
-        print("questions: ", questions)
-        print(f"### End debug {debug_index} in {file_name}\n")'''
         
         # Embeed all questions above
         questions_embeddings = cfg.embeddings.embed_documents(questions)
