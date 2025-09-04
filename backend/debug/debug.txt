@@ -8,8 +8,8 @@ print(f"### End debug {debug_index} in {file_name}\n")
 
 Commmit commands:
 git add .
-git commit -m "Add Graph RAG with Milvus vector database mechanism, update REAME.md"
-git push --force
+git commit -m "Update README.md"
+git push 
 
 
 "https://lilianweng.github.io/posts/2023-06-23-agent/",
