@@ -1,12 +1,16 @@
-from src.config.config import Config
+from typing import List
 from langgraph.graph import StateGraph, MessagesState
 from langgraph.prebuilt import ToolNode
 from langchain_core.messages import SystemMessage, ToolMessage
 from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage
 from src.utils.helper_functions import retrieve_context_per_question
 from src.model.vectorstore import Vector_store
 from src.utils.query_transformer import QueryTransformer
 from src.utils.hype_embedder import HyPEEmbedder
+from src.model.graph_rag_processor import GraphRAGProcessor
+from src.datasets.load_graph_rag_dataset import load_graph_rag_dataset
+from src.config.config import Config
 
 cfg = Config()
 
@@ -38,12 +42,14 @@ def make_retrieve_tool(vector_store):
 
 class RAG:
     def __init__(self):
-        self.prompt = cfg.prompt
-        self.llm = cfg.llm
         self.state = MessagesState()
         self.vector_store = Vector_store()
         self.retrieve = make_retrieve_tool(self.vector_store.vector_store)
         self.query_transformer = QueryTransformer()
+        self.graph_rag_processor = None
+        
+        if cfg.enable_graph_rag == True:
+            self.__set_up_graph_rag()
         
         if cfg.enable_hype == True:
             self.hype_embedder = HyPEEmbedder()
@@ -57,8 +63,50 @@ class RAG:
         )
         self.state["messages"].insert(0, SystemMessage(content=self.system_prompt))
         
-    def query_or_respond(self):
-        llm_with_tools = self.llm.bind_tools([self.retrieve])
+    def __set_up_graph_rag(self):
+        # Load dataset
+        dataset = load_graph_rag_dataset()
+        
+        self.graph_rag_processor = GraphRAGProcessor(dataset)
+    
+    def query(self, query: str):
+        self.state["messages"].append(HumanMessage(content=query))
+        if not cfg.enable_graph_rag:
+            self.__normal_query(query)
+        else:
+            self.__graph_rag_query(query)
+    
+    def __normal_query(self, query):
+        # Retrive documents or diricly answer with llm knowledge
+        message, answer_type = self.__retrieve_or_respond()
+        self.state["messages"].extend(message)
+        self.state["answer_type"] = answer_type
+        
+        # Generate answer
+        self.__generate()
+    
+    def __graph_rag_query(self, query) -> List[str]:
+        self.state["answer_type"] = "rag"
+        
+        query_entities = self.__entity_extraction(query)
+        retrieved_docs = self.graph_rag_processor.query_graph_rag(
+            query=query,
+            query_entities=query_entities,
+        )
+        
+        self.__generate(retrieved_docs)
+    
+    def __entity_extraction(self, query: str) -> list:
+        # @TODO: generalize this method
+        entities = []
+        keywords = ["Euler", "Bernoulli", "Jakob", "Johann", "Daniel", "Basel"]
+        for keyword in keywords:
+            if keyword.lower() in query.lower():
+                entities.append(keyword)
+        return entities
+        
+    def __retrieve_or_respond(self):
+        llm_with_tools = cfg.llm.bind_tools([self.retrieve])
         response = llm_with_tools.invoke(self.state["messages"])
         # If there are tool calls, execute tools and create ToolMessage
         tool_messages = []
@@ -84,16 +132,29 @@ class RAG:
         # Return both AIMessage and ToolMessage (if any)
         return [response] + tool_messages, answer_type
 
-    def generate(self):
-        tool_messages = []
-        for message in reversed(self.state["messages"]):
-            if message.type == "tool":
-                tool_messages.append(message)
-            else:
-                break
-        tool_messages = tool_messages[::-1] # Reverse
+    def __generate(self, retrieved_docs: List[str]):
+        retrieved_docs_text = ""
+        if cfg.enable_graph_rag:
+            retrieved_docs_text = "\n\n".join(retrieved_docs) # Retrieved docs
+            
+            # Debug 
+            '''debug_index = 0
+            import os
+            file_name = os.path.basename(__file__)
+            print(f"\n### Start debug {debug_index} in {file_name}")
+            print(retrieved_docs_text)
+            print(f"### End debug {debug_index} in {file_name}\n")'''
+        
+        else:
+            tool_messages = []
+            for message in reversed(self.state["messages"]):
+                if message.type == "tool":
+                    tool_messages.append(message)
+                else:
+                    break
+            tool_messages = tool_messages[::-1] # Reverse
 
-        retrieved_docs_text = "\n\n".join(tool_message.content for tool_message in tool_messages) # Retrieved docs
+            retrieved_docs_text = "\n\n".join(tool_message.content for tool_message in tool_messages) # Retrieved docs
 
         system_message_content = (
             "You are an assistant for question-answering tasks. "
@@ -107,12 +168,12 @@ class RAG:
 
         conversation_messages = []
         for message in self.state["messages"]:
-            if message.type in ("human", "system") or (message.type == "ai" and not message.tool_calls):
+            if message.type == "human" or (message.type == "ai" and not message.tool_calls):
                 conversation_messages.append(message)
                 
         prompt = [SystemMessage(system_message_content)] + conversation_messages
 
-        response = self.llm.invoke(prompt)
+        response = cfg.llm.invoke(prompt)
         self.state["answer"] = response.content
 
     def tranform_query(self, original_query):

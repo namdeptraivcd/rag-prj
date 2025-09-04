@@ -8,7 +8,7 @@ print(f"### End debug {debug_index} in {file_name}\n")
 
 Commmit commands:
 git add .
-git commit -m "Remove unnecessary debug codes"
+git commit -m "Add Graph RAG with Milvus vector database mechanism"
 git push
 
 

@@ -1,5 +1,4 @@
 from src.model.rag import RAG
-from langchain_core.messages import HumanMessage
 
 
 def main():
@@ -8,18 +7,14 @@ def main():
 
     while True:
         # Set question
-        question = input("YOU: ")
-        model.state["messages"].append(HumanMessage(content = question))
-
-        # Query or respond
-        message, answer_type = model.query_or_respond()
-        model.state["messages"].extend(message)
-
-        # Generate
-        model.generate()
+        # Example: What contribution did the son of Euler's teacher make?
+        query = input("YOU: ")
+        
+        # Query
+        model.query(query)
 
         # Print answer
-        print(f"BOT: ({answer_type}) {model.state["answer"]}")
+        print(f"BOT: ({model.state["answer_type"]}) {model.state["answer"]}")
 
 
 if __name__ =="__main__": 
