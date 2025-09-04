@@ -15,4 +15,5 @@ class State(TypedDict):
     query: Search
     context: List[Document]
     answer: str
+    answer_type: str
 
