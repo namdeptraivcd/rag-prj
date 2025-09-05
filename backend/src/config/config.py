@@ -31,7 +31,7 @@ class Config():
         self.embedding_dim = len(self.embeddings.embed_query("test"))
         
         # Graph RAG with Milvus vector database settings
-        self.enable_graph_rag = True
+        self.enable_graph_rag = False
         self.graph_rag_tartget_degree = 1 # Degree of graph expansion (for most cases, 1 or 2 are enough)
         self.graph_rag_top_k_entites_or_relations = 3 # Number of entities/relations to retrieve
         self.graph_rag_final_top_k_chunks = 2  # Number of final passages to return

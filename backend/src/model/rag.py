@@ -83,7 +83,7 @@ class RAG:
         self.state["answer_type"] = answer_type
         
         # Generate answer
-        self.__generate()
+        self.__generate() 
     
     def __graph_rag_query(self, query) -> List[str]:
         self.state["answer_type"] = "rag"
@@ -105,7 +105,7 @@ class RAG:
                 entities.append(keyword)
         return entities
         
-    def __retrieve_or_respond(self):
+    def __retrieve_or_respond(self): 
         llm_with_tools = cfg.llm.bind_tools([self.retrieve])
         response = llm_with_tools.invoke(self.state["messages"])
         # If there are tool calls, execute tools and create ToolMessage
@@ -132,7 +132,7 @@ class RAG:
         # Return both AIMessage and ToolMessage (if any)
         return [response] + tool_messages, answer_type
 
-    def __generate(self, retrieved_docs: List[str]):
+    def __generate(self, retrieved_docs: List[str] = None): #Debug retrieved_docs default = None
         retrieved_docs_text = ""
         if cfg.enable_graph_rag:
             retrieved_docs_text = "\n\n".join(retrieved_docs) # Retrieved docs

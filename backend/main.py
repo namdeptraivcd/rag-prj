@@ -14,8 +14,7 @@ def main():
         model.query(query)
 
         # Print answer
-        print(f"BOT: ({model.state["answer_type"]}) {model.state["answer"]}")
-
+        print(f"BOT: ({model.state['answer_type']}) {model.state['answer']}")
 
 if __name__ =="__main__": 
     main()
