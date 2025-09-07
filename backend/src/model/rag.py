@@ -84,7 +84,7 @@ class RAG:
         self.state["answer_type"] = answer_type
         
         # Generate answer
-        self.__generate() 
+        self.__generate_v0() 
     
     def __graph_rag_query(self, query) -> List[str]:
         self.state["answer_type"] = "rag"
@@ -132,6 +132,37 @@ class RAG:
 
         # Return both AIMessage and ToolMessage (if any)
         return [response] + tool_messages, answer_type
+
+    def __generate_v0(self): #Debug retrieved_docs default = None
+        tool_messages = []
+        for message in reversed(self.state["messages"]):
+            if message.type == "tool":
+                tool_messages.append(message)
+            else:
+                break
+        tool_messages = tool_messages[::-1] # Reverse
+
+        retrieved_docs_text = "\n\n".join(tool_message.content for tool_message in tool_messages) # Retrieved docs
+
+        system_message_content = (
+            "You are an assistant for question-answering tasks. "
+            "Use the following pieces of retrieved context to answer "
+            "the question. If you don't know the answer, say that you "
+            "don't know. Use three sentences maximum and keep the "
+            "answer concise."
+            "\n\n"
+            f"{retrieved_docs_text}"
+        )
+
+        conversation_messages = []
+        for message in self.state["messages"]:
+            if message.type == "human" or (message.type == "ai" and not message.tool_calls):
+                conversation_messages.append(message)
+                
+        prompt = [SystemMessage(system_message_content)] + conversation_messages
+
+        response = cfg.llm.invoke(prompt)
+        self.state["answer"] = response.content
 
     def __generate(self, retrieved_docs: List[str] = None): #Debug retrieved_docs default = None
         retrieved_docs_text = ""

@@ -36,9 +36,11 @@ class Config():
         self.graph_rag_top_k_entites_or_relations = 3 # Number of entities/relations to retrieve
         self.graph_rag_final_top_k_chunks = 2  # Number of final passages to return
         
-        # HyPR settings
+        # HyPE settings
         self.enable_hype = False
-        self.enable_hyde = False
+        
+        # HyDE settings
+        self.enable_hyde = True
         
         # Query transformations settings
         self.enable_rewrite_query = False
