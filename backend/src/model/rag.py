@@ -11,6 +11,7 @@ from src.utils.hype_embedder import HyPEEmbedder
 from src.model.graph_rag_processor import GraphRAGProcessor
 from src.datasets.load_graph_rag_dataset import load_graph_rag_dataset
 from src.config.config import Config
+from src.utils.hyde_retriever import HyDERetriever
 
 cfg = Config()
 
@@ -192,6 +193,10 @@ class RAG:
             sub_queries = self.query_transformer.decompose_query(original_query)
             for sub_query in sub_queries:
                 transformed_queries.append(sub_query)
+        if cfg.enable_hyde: #Debug
+            hyde_retriever = HyDERetriever()
+            Hyde_document = hyde_retriever.generate_hypothetical_document(original_query)
+            transformed_queries.append(Hyde_document)
         
         return transformed_queries
         

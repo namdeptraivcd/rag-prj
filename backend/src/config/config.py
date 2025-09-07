@@ -38,6 +38,7 @@ class Config():
         
         # HyPR settings
         self.enable_hype = False
+        self.enable_hyde = False
         
         # Query transformations settings
         self.enable_rewrite_query = False
