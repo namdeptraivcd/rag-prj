@@ -1,18 +1,12 @@
 import faiss
 import bs4 
-import pandas as pd
 from tqdm import tqdm
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from qdrant_client.models import Distance, VectorParams
-from langchain_qdrant import QdrantVectorStore
-from qdrant_client import QdrantClient
 from langchain.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_community.docstore.in_memory import InMemoryDocstore
-from src.utils.utils import read_source, split_text
 from src.utils.helper_functions import replace_t_with_space
 from src.utils.hype_embedder import HyPEEmbedder
 from src.config.config import Config

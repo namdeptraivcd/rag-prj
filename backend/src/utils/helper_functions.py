@@ -6,7 +6,7 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain import PromptTemplate
 from openai import RateLimitError
 from typing import List
-from rank_bm25 import BM25Okapi
+# from rank_bm25 import BM25Okapi
 # import fitz
 import asyncio
 import random
@@ -245,7 +245,7 @@ def show_context(context):
     return content'''
 
 
-def bm25_retrieval(bm25: BM25Okapi, cleaned_texts: List[str], query: str, k: int = 5) -> List[str]:
+'''def bm25_retrieval(bm25: BM25Okapi, cleaned_texts: List[str], query: str, k: int = 5) -> List[str]:
     """
     Perform BM25 retrieval and return the top k cleaned text chunks.
 
@@ -270,7 +270,7 @@ def bm25_retrieval(bm25: BM25Okapi, cleaned_texts: List[str], query: str, k: int
     # Retrieve the top k cleaned text chunks
     top_k_texts = [cleaned_texts[i] for i in top_k_indices]
 
-    return top_k_texts
+    return top_k_texts'''
 
 
 async def exponential_backoff(attempt):
