@@ -10,7 +10,6 @@ class HyDERetriever:
         self.document_gen_prompt = """Given the question '{query}', generate a hypothetical document that directly answers this question.
         The document should be detailed and in-depth. The document size has be exactly {chunk_size} characters."""
         self.chunk_size = cfg.chunk_size
-        '''self.chunk_overlap = cfg.chunk_overlap'''
         self.embeddings = cfg.embeddings
 
 

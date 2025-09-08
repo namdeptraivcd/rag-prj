@@ -1,5 +1,5 @@
 from src.model.rag import RAG
-
+from src.model.vectorstore import Vector_store
 
 def main():
     # Model
@@ -15,6 +15,5 @@ def main():
 
         # Print answer
         print(f"BOT: ({model.state['answer_type']}) {model.state['answer']}")
-
 if __name__ =="__main__": 
     main()

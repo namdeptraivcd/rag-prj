@@ -10,8 +10,13 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 from src.utils.helper_functions import replace_t_with_space
 from src.utils.hype_embedder import HyPEEmbedder
 from src.config.config import Config
+from src.utils.proposition_chunking_generator import Proposition_chunk_Gen
+from langchain_core.documents import Document
+
 
 cfg = Config()
+proposition_chunk_gen = Proposition_chunk_Gen()
+
 
 
 class Vector_store:
@@ -26,8 +31,8 @@ class Vector_store:
         # @TODO: fix bug: if we load more than one dataset, the chat will only be able to answer questions related to one dataset
         # Load datasets
         '''self.__load_data("web", cfg.web_data_paths)'''
-        self.__load_data("pdf", cfg.pdf_data_path)
-        '''self.__load_data("csv", cfg.csv_data_path)'''
+        '''self.__load_data("pdf", cfg.pdf_data_path)'''
+        self.__load_data("csv", cfg.csv_data_path)
 
     def __load_data(self, data_type, path):
         # @TODO: fix bug: if we change the current website by another one, there will be a bug
@@ -53,17 +58,19 @@ class Vector_store:
         else:
             raise NotImplementedError("Data type not supported")
         
-        chunks = self.text_splitter.split_documents(documents)
-        chunks = replace_t_with_space(chunks) # Clean chunks
+        self.chunks = self.text_splitter.split_documents(documents)
+        self.chunks = replace_t_with_space(self.chunks) # Clean chunks
         
         # Create vector store
         vector_store = None
-        if cfg.enable_hype == False:
-            vector_store = FAISS.from_documents(chunks, self.embeddings)
-            
-        else: 
+        
+        if cfg.enable_proposition_chunking == True:
+            evaluated_propositions = proposition_chunk_gen.generate_evaluated_proposition(self.chunks)
+            documents = [Document(page_content=prop) for prop in evaluated_propositions]
+            vector_store = FAISS.from_documents(documents, self.embeddings)
+        elif cfg.enable_hype == True:
             # Generate embeddings for the first chunk to get the dimension
-            first_chunk = chunks[0]
+            first_chunk = self.chunks[0]
             question_embeddings = self.hype_embedder.generate_hypothetical_prompt_embeddings(first_chunk.page_content)
             vector_store = FAISS(
                 embedding_function=cfg.embeddings,
@@ -72,7 +79,7 @@ class Vector_store:
                 index_to_docstore_id={}
             )
     
-            for _, chunk in enumerate(tqdm(chunks, desc="HyPE embedding")):
+            for _, chunk in enumerate(tqdm(self.chunks, desc="HyPE embedding")):
                 # QUESTION: page_content?
                 question_embeddings = self.hype_embedder.generate_hypothetical_prompt_embeddings(chunk.page_content)
                 
@@ -82,5 +89,8 @@ class Vector_store:
                 ]
                 
                 vector_store.add_embeddings(chunks_with_embedding_questions)
+            
+        else:
+            vector_store = FAISS.from_documents(self.chunks, self.embeddings)
         
         self.vector_store.append(vector_store)

@@ -40,7 +40,10 @@ class Config():
         self.enable_hype = False
         
         # HyDE settings
-        self.enable_hyde = True
+        self.enable_hyde = False
+
+        # Proposition_chunking settings
+        self.enable_proposition_chunking = True
         
         # Query transformations settings
         self.enable_rewrite_query = False
